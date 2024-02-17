@@ -3,3 +3,4 @@
 *.map
 *.swp
 rom.bin
+librt.a
