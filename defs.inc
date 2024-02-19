@@ -17,6 +17,11 @@
 .global lcd_puthex
 .global lcd_putc
 .global lcd_puts
+.global lcd_loc
+.global lcd_scroll
+LCD_SCROLL_LEFT = %000
+LCD_SCROLL_RIGHT = %100
+.global lcd_chars
 
 ; led.s
 .global led_on
@@ -27,3 +32,6 @@
 ; ramtest.s
 .global ramtest
 .global ramtest_success
+
+; maze.s
+.global maze

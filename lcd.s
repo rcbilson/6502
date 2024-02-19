@@ -40,6 +40,7 @@ loop:
         rts
 .endproc
 
+lcd_data:
 .proc lcd_putc
         sta PORTB
 
@@ -114,4 +115,37 @@ done:
 .proc lcd_clear
         lda #%00000001 ; Clear display
         jmp lcd_cmd
+.endproc
+
+.proc lcd_loc
+        ; a contains address
+        ora #%10000000 ; Set DDRAM address
+        jmp lcd_cmd
+.endproc
+
+.proc lcd_scroll
+        ; a contains LCD_SCROLL_LEFT or LCD_SCROLL_RIGHT
+        ora #%0000011000
+        jmp lcd_cmd
+.endproc
+
+.proc lcd_chars
+        ; a::y is pointer to character data
+        sta r0+1
+        lda #0
+        sta r0
+
+        lda #%01000000 ; Set CGRAM address 0
+        jsr lcd_cmd
+loop:
+        lda (r0),y
+        bmi done
+        jsr lcd_data
+        iny
+        bne loop
+        inc r0+1
+        jmp loop
+done:
+        ; set DDRAM address for future writes
+        jmp lcd_home
 .endproc

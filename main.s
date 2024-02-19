@@ -18,18 +18,12 @@ main:
 
 ramtest_success:
         jsr lcd_clear
-        lda #>test_complete
-        ldy #<test_complete
-        jsr lcd_puts
         jsr led_off
-loop:
-        jmp loop
+        jmp maze
 
 .rodata
 testing:
-.asciiz "testing"
-test_complete:
-.asciiz "test complete"
+.asciiz "starting"
 
 .segment "VECTORS"
 nmi:
