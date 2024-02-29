@@ -2,6 +2,7 @@
 *.lst
 *.map
 *.swp
+*.swo
 rom.bin
 librt.a
 tags

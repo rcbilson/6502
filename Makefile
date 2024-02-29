@@ -2,7 +2,7 @@ CC65=cc65/bin
 AS=$(CC65)/ca65
 ASFLAGS=-l $@.lst
 
-rom.bin: main.o ramtest.o maze.o librt.a 
+rom.bin: main.o ramtest.o maze.o spislave.o librt.a 
 	$(CC65)/ld65 --config eater.cfg -m rom.map -o $@ $^
 
 librt.a: reg.o via.o led.o lcd.o lfsr.o
@@ -30,7 +30,7 @@ cc65:
 
 .PHONY: tags
 tags:
-	find . -name '*.s' | xargs awk -e'/^.proc/{ OFS="\t"; print $$2, FILENAME, "/" $$0 "/" }' | sort > tags
+	find . -name '*.s' | xargs awk '/^.proc/{ OFS="\t"; print $$2, FILENAME, "/" $$0 "/" }' | LC_ALL=C sort > tags
 
 .PHONY: clean
 clean:

@@ -35,3 +35,6 @@ LCD_SCROLL_RIGHT = %100
 
 ; maze.s
 .global maze
+
+; spislave.s
+.global spitest

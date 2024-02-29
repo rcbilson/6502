@@ -19,7 +19,7 @@ main:
 ramtest_success:
         jsr lcd_clear
         jsr led_off
-        jmp maze
+        jmp spitest
 
 .rodata
 testing:
