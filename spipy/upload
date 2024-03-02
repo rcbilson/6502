@@ -1,0 +1,17 @@
+#!/usr/bin/env python
+
+import argparse
+import gpiozero
+
+parser = argparse.ArgumentParser()
+parser.add_argument("image", help="program image to be uploaded")
+args = parser.parse_args()
+
+device = gpiozero.SPIDevice(port=0, device=0)
+device._spi.rate = 6000
+
+with open(args.image, "rb") as in_file:
+    bytes = in_file.read()
+    print(f"sending {len(bytes)} bytes")
+    device._spi.transfer(bytes)
+    print("transfer complete")
