@@ -1,4 +1,4 @@
-CC65=cc65/bin
+CC65:=cc65/bin-$(shell uname -m)
 AS=$(CC65)/ca65
 ASFLAGS=-l $@.lst -I $(shell pwd)
 
@@ -26,7 +26,9 @@ hexdump: rom.bin
 
 .PHONY: cc65
 cc65:
+	rm -rf $(CC65) cc65/bin cc65/wrk
 	make -C cc65
+	mv cc65/bin $(CC65)
 
 .PHONY: tags
 tags:
