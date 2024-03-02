@@ -1,6 +1,8 @@
 .include "defs.inc"
 .include "via.inc"
 
+DESTINATION = $200
+
 .zeropage
 startclk: .res 1
 accumulator: .res 1
@@ -8,29 +10,36 @@ accumulator: .res 1
 
 .macro CHECK_CE
         lda PORTA
-        and SPI_CE
+        and #SPI_CE
 .endmacro
 
 .proc spitest
         lda #0
         sta accumulator
+        lda 0
+        sta r0
+        lda #>DESTINATION
+        sta r0+1
+        ldy #<DESTINATION
 
-        ; wait for master to raise CE
+        ; CE must start high
+init:
+        CHECK_CE
+        beq init
+
+        ; wait for master to lower CE
 wait_ce:
-        ;jsr lcd_home
-        ;lda PORTA+1
-        ;jsr lcd_puthex
-        ;lda PORTA
-        ;jsr lcd_puthex
         CHECK_CE
         bne wait_ce
+        jsr led_on
 
+next_byte:
         ldx #8
 
         ; wait for CLK to go high
 wait_clk_hi:
         CHECK_CE
-        bne spitest
+        bne spi_done
         lda PORTA
         and #SPI_CLK
         beq wait_clk_hi
@@ -45,7 +54,7 @@ add_bit:
         ; wait for CLK to go low
 wait_clk_lo:
         CHECK_CE
-        bne spitest
+        bne spi_done
         lda PORTA
         and #SPI_CLK
         bne wait_clk_lo
@@ -54,7 +63,21 @@ wait_clk_lo:
         bne wait_clk_hi
 
         lda accumulator
-        jsr lcd_puthex
+        sta (r0),y
+        iny
+        bne next_byte
+        inc r0+1
+        jmp next_byte
+.endproc
 
+.proc spi_done
+        jsr led_off
+        cpy #0
+        bne execute
+        lda #>DESTINATION
+        cmp r0+1
+        bne execute
         jmp spitest
+execute:
+        jmp DESTINATION
 .endproc

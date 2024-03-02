@@ -1,8 +1,8 @@
 CC65=cc65/bin
 AS=$(CC65)/ca65
-ASFLAGS=-l $@.lst
+ASFLAGS=-l $@.lst -I $(shell pwd)
 
-rom.bin: main.o ramtest.o maze.o spislave.o librt.a 
+rom.bin: main.o ramtest.o maze/maze.o spislave.o librt.a 
 	$(CC65)/ld65 --config eater.cfg -m rom.map -o $@ $^
 
 librt.a: reg.o via.o led.o lcd.o lfsr.o

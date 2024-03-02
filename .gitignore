@@ -3,6 +3,6 @@
 *.map
 *.swp
 *.swo
-rom.bin
+*.bin
 librt.a
 tags
