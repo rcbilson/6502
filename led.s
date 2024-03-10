@@ -3,12 +3,14 @@
 
 .proc led_on
         lda #LED
+        ora PORTA
         sta PORTA
         rts
 .endproc
 
 .proc led_off
-        lda #0
+        lda #<~LED
+        and PORTA
         sta PORTA
         rts
 .endproc
