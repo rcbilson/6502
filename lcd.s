@@ -5,15 +5,20 @@
         lda #%00000000 ; Set all pins on port B to input
         sta DDRB
 
+        lda #<~(RS | E | RW) ; Clear RS/RW/E bits
+        and PORTA
+        sta PORTA
 loop:
-
         lda #RW         ; Clear RS/E bits
+        ora PORTA
         sta PORTA
 
         lda #(RW | E)  ; Set RW and E bits to check busy
+        ora PORTA
         sta PORTA
 
-        lda #0         ; Clear RS/RW/E bits
+        lda #<~(RS | E | RW) ; Clear RS/RW/E bits
+        and PORTA
         sta PORTA
 
         bit PORTB      ; Set N flag according to bit 7
@@ -29,13 +34,16 @@ loop:
 
         jsr lcd_wait
 
-        lda #0         ; Clear RS/RW/E bits
+        lda #<~(RS | E | RW) ; Clear RS/RW/E bits
+        and PORTA
         sta PORTA
 
         lda #E         ; Set E bit to send instruction
+        ora PORTA
         sta PORTA
 
-        lda #0         ; Clear RS/RW/E bits
+        lda #<~(RS | E | RW) ; Clear RS/RW/E bits
+        and PORTA
         sta PORTA
         rts
 .endproc
@@ -46,13 +54,16 @@ lcd_data:
 
         jsr lcd_wait
 
-        lda #RS        ; Clear RS/RW/E bits
+        lda #<~(RS | E | RW) ; Clear RS/RW/E bits
+        and PORTA
         sta PORTA
 
-        lda #(RS | E)  ; Set RS and E bits to send data
+        lda #(RS | E)       ; Set RS and E bits to send data
+        ora PORTA
         sta PORTA
 
-        lda #0         ; Clear RS/RW/E bits
+        lda #<~(RS | E | RW) ; Clear RS/RW/E bits
+        and PORTA
         sta PORTA
         rts
 .endproc

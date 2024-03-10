@@ -14,6 +14,10 @@ accumulator: .res 1
 .endmacro
 
 .proc spitest
+        lda #>load_program
+        ldy #<load_program
+        jsr lcd_puts
+
         lda #0
         sta accumulator
         lda 0
@@ -81,3 +85,7 @@ wait_clk_lo:
 execute:
         jmp DESTINATION
 .endproc
+
+.rodata
+load_program:
+.asciiz "load program"

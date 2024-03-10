@@ -9,8 +9,8 @@ main:
         jsr via_init
 	jsr led_on
         jsr lcd_init
-        lda #>testing
-        ldy #<testing
+        lda #>hello
+        ldy #<hello
         jsr lcd_puts
 
         lda #RAMTEST_START
@@ -22,8 +22,8 @@ ramtest_success:
         jmp spitest
 
 .rodata
-testing:
-.asciiz "starting"
+hello:
+.asciiz "hello!"
 
 .segment "VECTORS"
 nmi:
