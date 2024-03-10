@@ -1,14 +1,4 @@
-CC65:=../cc65/bin-$(shell uname -m)
-AS=$(CC65)/ca65
-ASFLAGS=-l $@.lst -I ..
+APP=maze.bin
+OBJECTS=maze.o
 
-maze.bin: maze.o ../librt.a 
-	$(CC65)/ld65 --config ../app.cfg -m maze.map -o $@ $^
-
-.PHONY: upload
-upload: maze.bin
-	../spipy/upload $<
-
-.PHONY: clean
-clean:
-	rm -f maze.bin *.lst *.map *.o
+include ../app.mk
