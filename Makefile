@@ -14,11 +14,11 @@ test: rom.bin
 
 .PHONY: netprogram
 netprogram: rom.bin
-	ssh bokonon minipro -p AT28C256 -w /n/user/richard/src/6502/rom.bin
+	ssh bokonon minipro -p AT28C256 -w /n/user/richard/src/6502/rom.bin -u
 
 .PHONY: program
 program: rom.bin
-	minipro -p AT28C256 -w rom.bin
+	minipro -p AT28C256 -w rom.bin -u
 
 .PHONY: hexdump
 hexdump: rom.bin
